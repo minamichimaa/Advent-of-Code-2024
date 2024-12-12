@@ -1,8 +1,12 @@
-def prettyPrint(array: list):
+from typing import Literal, TypeAlias
+
+def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
-def letterSearch(array, startingPos, direction: str, letter):
+Direction: TypeAlias = Literal['topLeft', 'up', 'topRight', 'left', 'right', 'bottomleft', 'down', 'bottomRight']
+
+def letterSearch(array: list[list[str]], startingPos: tuple[int, int], direction: Direction, letter: str) -> tuple[int, int] | None:
     r = startingPos[0]
     c = startingPos[1]
     # update position based on direction
@@ -42,9 +46,9 @@ def letterSearch(array, startingPos, direction: str, letter):
 with open("input.txt", 'r') as f:
     textIn = f.readlines()
 
-wSearch = [x.strip() for x in textIn]
+wSearch: list[str] = [x.strip() for x in textIn]
 
-directions = [
+directions: list[Direction] = [
     'topLeft',
     'up',
     'topRight',
@@ -55,7 +59,7 @@ directions = [
     'bottomRight'
 ]
 
-count = 0
+count: int = 0
 # rows
 for i in range(len(wSearch)):
     # columns

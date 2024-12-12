@@ -1,4 +1,4 @@
-def prettyPrint(array: list):
+def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
@@ -7,8 +7,8 @@ with open("input.txt", 'r') as f:
     textIn = f.readlines()
 
 # parse input
-rules = {}
-updates = []
+rules: dict[int, set[int]] = {}
+updates: list[list[int]] = []
 
 for line in textIn:
     # rules
@@ -23,12 +23,12 @@ for line in textIn:
     elif ',' in line:
         updates.append([int(x) for x in line.strip().split(',')])
 
-total = 0
+total: int = 0
 
 # check each update
 for update in updates:
     correctOrder = True
-    pastNums = set()
+    pastNums: set[int] = set()
     queue = update
     # check each number in current update
     for q in queue:

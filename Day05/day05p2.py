@@ -1,18 +1,22 @@
-def prettyPrint(array: list):
+from typing import TypeAlias, TypeVar
+
+def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
-class TreeNode:
-    def __init__(self, value):
-        self.value = value
-        self.children = []
+_T = TypeVar('_T')
 
-    def depth(self):
+class TreeNode[_T]:
+    def __init__(self, value: _T):
+        self.value: _T = value
+        self.children: list[TreeNode[_T]] = []
+
+    def depth(self) -> int:
         if len(self.children) == 0:
             return 1
         return max(x.depth() + 1 for x in self.children)
 
-    def optimalOrder(self):
+    def optimalOrder(self) -> tuple[int, str]:
         if len(self.children) == 0:
             return (1, self.value)
         childDepths = []
@@ -22,7 +26,7 @@ class TreeNode:
         childDepths.sort(key = lambda x: x[0], reverse=True)
         return childDepths[0]
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self.value)
         string = ''
         for child in self.children:
@@ -34,8 +38,8 @@ with open("input.txt", 'r') as f:
     textIn = f.readlines()
 
 # parse input
-rules = {}
-updates = []
+rules: dict[int, set[int]] = {}
+updates: list[list[int]] = []
 
 for line in textIn:
     # rules
@@ -50,12 +54,12 @@ for line in textIn:
     elif ',' in line:
         updates.append([int(x) for x in line.strip().split(',')])
 
-needReorder = []
+needReorder: list[list[int]] = []
 
 # check each update
 for update in updates:
     correctOrder = True
-    pastNums = set()
+    pastNums: set[int] = set()
     queue = update
     # check each number in current update
     for q in queue:
@@ -75,16 +79,16 @@ for update in updates:
     if not correctOrder:
         needReorder.append(update)
         
-total = 0
+total: int = 0
 for fix in needReorder:
     # trim rules
-    newRules = {}
+    newRules: dict[int, set[int]] = {}
     for q in fix:
         if q in rules:
             newRules[q] = rules[q] & set(fix)
 
     # make nodes
-    nodeDict = {}
+    nodeDict: dict[int, TreeNode[int]] = {}
     for rule in newRules:
         # node not already made
         if rule not in nodeDict:
@@ -98,7 +102,7 @@ for fix in needReorder:
             nodeDict[rule].children.append(nodeDict[subrule])
 
     # get longest order of pages
-    orders = []
+    orders: list[tuple[int, str]] = []
     for node in nodeDict:
         orders.append(nodeDict[node].optimalOrder())
     orders.sort(key = lambda x: x[0], reverse=True)

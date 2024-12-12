@@ -1,3 +1,5 @@
+from typing import Literal
+
 def prettyPrint(array: list[str]) -> None:
     for i in array:
         print(i.strip())
@@ -15,8 +17,8 @@ prettyPrint(textIn)
 diskMap = textIn[0].strip()
 
 # initalized blocks
-blocks = []
-currentID = 0
+blocks: list[int | Literal['.']] = []
+currentID: int = 0
 for i, v in enumerate(diskMap):
     eveness = i % 2
     
@@ -33,7 +35,7 @@ for i, v in enumerate(diskMap):
 print(''.join(str(x) for x in blocks))
 
 # reorder
-beginning = 0
+beginning: int = 0
 end = len(blocks) - 1
 
 # move pointers until they meet
@@ -54,7 +56,7 @@ while beginning <= end:
     beginning += 1
 
 # calculate result
-total = 0
+total: int = 0
 for i, v in enumerate(blocks):
     if v != '.':
         total += i * v

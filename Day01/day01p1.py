@@ -1,4 +1,4 @@
-def prettyPrint(array: list):
+def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
@@ -8,8 +8,8 @@ with open("input.txt", 'r') as f:
     prettyPrint(textIn)
 
 ## format input
-leftList = []
-rightList = []
+leftList: list[int] = []
+rightList: list[int] = []
 for line in textIn:
     a, b = line.strip().split('  ')
     leftList.append(int(a))

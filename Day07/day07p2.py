@@ -10,7 +10,7 @@ regex = re.compile(r'([0-9]+)')
 with open("input.txt", 'r') as f:
     textIn = f.readlines()
     
-total = 0
+total: int = 0
 
 # calculate
 for line in textIn:
@@ -25,7 +25,7 @@ for line in textIn:
 
     # next numbers
     for seq in sequence[1:]:
-        newNums = set()
+        newNums: set[int] = set()
         # try operators
         for num in nums:
             add = num + seq

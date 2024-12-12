@@ -1,4 +1,6 @@
-def prettyPrint(array: list):
+from typing import TypeAlias, Literal
+
+def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
@@ -6,14 +8,17 @@ def prettyPrint(array: list):
 with open("input.txt", 'r') as f:
     textIn = f.readlines()
     
-graph = [x.strip() for x in textIn]
+graph: list[str] = [x.strip() for x in textIn]
 
-def moveDirection(field: list, direction: str, position: tuple):
+Direction: TypeAlias = Literal['up', 'right', 'down', 'left']
+Point: TypeAlias = tuple[int, int]
+
+def moveDirection(field: list[list[str]], direction: Direction, position: Point) -> tuple[list[Point], Point, bool]:
     currPos = position
     visited = [position]
     exited = False
 
-    dirs = {
+    dirs: dict[str, Point] = {
         'up': (-1, 0),
         'right': (0, 1),
         'down': (1, 0),
@@ -22,7 +27,7 @@ def moveDirection(field: list, direction: str, position: tuple):
     
     while True:
         # move
-        nextPos = tuple(map(sum, zip(currPos, dirs[direction])))
+        nextPos: Point = tuple(map(sum, zip(currPos, dirs[direction])))
         # check rows and columns if out of bounds
         if nextPos[0] < 0 or nextPos[0] == len(field) or nextPos[1] < 0 or nextPos[1] == len(field[0]):
             exited = True
@@ -41,7 +46,7 @@ def moveDirection(field: list, direction: str, position: tuple):
 rowGuard = None
 colGuard = None
 
-directions = [
+directions: list[Direction] = [
     'up',
     'right',
     'down',
@@ -55,11 +60,14 @@ for rNum, rVal in enumerate(graph):
         rowGuard = rNum
         break
 
+rowGuard: int
+colGuard: int
+
 graph[rowGuard] = graph[rowGuard][:colGuard] + '.' + graph[rowGuard][colGuard+1:] 
 
 # do movement
-facing = 0
-visited = []
+facing: int = 0
+visited: list[tuple[int, int, int]] = []
 
 while True:
     # move
@@ -76,13 +84,13 @@ while True:
     # rotate
     facing = (facing + 1) % 4
 
-validObstructionCount = 0
+validObstructionCount: int = 0
 for i, pos in reversed(list(enumerate(visited))[1:]):
     print(f'obstructing: {pos}')
     # make copy of map
     newGraph = [x for x in graph]
     # put object in position
-    newLine = newGraph[pos[0]][:pos[1]] + '#' + newGraph[pos[0]][pos[1]+1:]
+    newLine: str = newGraph[pos[0]][:pos[1]] + '#' + newGraph[pos[0]][pos[1]+1:]
     newGraph[pos[0]] = newLine
     
     # continue simulation movement
