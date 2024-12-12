@@ -1,4 +1,4 @@
-def prettyPrint(array: list):
+def prettyPrint(array: list[str]) -> None:
     for i in array:
         print(i.strip())
 

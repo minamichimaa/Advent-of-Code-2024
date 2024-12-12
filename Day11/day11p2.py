@@ -1,6 +1,6 @@
 from math import log10, floor
 
-def prettyPrint(array: list) -> None:
+def prettyPrint(array: list[str]) -> None:
     for i in array:
         print(i.strip())
 

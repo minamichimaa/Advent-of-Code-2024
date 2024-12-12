@@ -1,15 +1,8 @@
 from itertools import combinations
 
-def prettyPrint(array: list):
+def prettyPrint(array: list[str]) -> None:
     for i in array:
         print(i.strip())
-
-def minusTuple(tupl1, tupl2):
-    a1, a2 = tupl1
-    b1, b2 = tupl2
-    c1 = a1 - b1
-    c2 = a2 - b2
-    return (c1, c2)
 
 ## input
 with open("input.txt", 'r') as f:

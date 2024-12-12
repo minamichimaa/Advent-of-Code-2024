@@ -1,8 +1,8 @@
-def prettyPrint(array: list):
+def prettyPrint(array: list[str]) -> None:
     for i in array:
         print(i.strip())
 
-def getValidAdjacentCoordinates(daMap, coordinate):
+def getValidAdjacentCoordinates(daMap: list[str], coordinate: tuple[int, int]) -> list[tuple[int, int]]:
     r,c = coordinate
 
     newCoord = [
