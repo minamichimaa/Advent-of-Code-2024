@@ -26,7 +26,7 @@ with open("input.txt", 'r') as f:
     
 prettyPrint(textIn)
 
-topMap = [x.strip() for x in textIn]
+topMap: list[str] = [x.strip() for x in textIn]
 
 trailStarts = []
 # get coordinates of start of trail (0)
@@ -36,12 +36,12 @@ for r, x in enumerate(topMap):
             trailStarts.append((r,c))
 
 # go through each starting position
-totalScore = 0
+totalScore: int = 0
 for start in trailStarts:
-    queue = {(*start, 0)}
+    queue: set[tuple[int, int, int]] = {(*start, 0)}
 
     score = 0
-    visited = set()
+    visited: set[tuple[int, int, int]] = set()
 
     # until no more unvisited
     while len(queue):

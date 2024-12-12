@@ -1,4 +1,6 @@
-def prettyPrint(array: list):
+from typing import TypeAlias, Literal
+
+def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
@@ -6,14 +8,17 @@ def prettyPrint(array: list):
 with open("input.txt", 'r') as f:
     textIn = f.readlines()
     
-graph = [x.strip() for x in textIn]
+graph: list[str] = [x.strip() for x in textIn]
 
-def moveDirection(field: list, direction: str, position: tuple):
+Direction: TypeAlias = Literal['up', 'right', 'down', 'left']
+Point: TypeAlias = tuple[int, int]
+
+def moveDirection(field: list[list[str]], direction: Direction, position: Point) -> tuple[set[Point], Point, bool]:
     currPos = position
     visited = {position}
     exited = False
 
-    dirs = {
+    dirs: dict[Direction, Point] = {
         'up': (-1, 0),
         'right': (0, 1),
         'down': (1, 0),
@@ -23,7 +28,7 @@ def moveDirection(field: list, direction: str, position: tuple):
     while True:
         # move
         print(currPos)
-        nextPos = tuple(map(sum, zip(currPos, dirs[direction])))
+        nextPos: Point = tuple(map(sum, zip(currPos, dirs[direction])))
         # check rows and columns if out of bounds
         if nextPos[0] < 0 or nextPos[0] == len(field) or nextPos[1] < 0 or nextPos[1] == len(field[0]):
             exited = True
@@ -39,10 +44,10 @@ def moveDirection(field: list, direction: str, position: tuple):
 
     return (visited, currPos, exited)
 
-rowGuard = None
-colGuard = None
+rowGuard: int | None = None
+colGuard: int | None = None
 
-directions = [
+directions: list[Direction] = [
     'up',
     'right',
     'down',
@@ -56,9 +61,12 @@ for rNum, rVal in enumerate(graph):
         rowGuard = rNum
         break
 
+rowGuard: int
+colGuard: int
+
 # do movement
 facing = 0
-visted = {(rowGuard, colGuard)}
+visted: set[Point] = {(rowGuard, colGuard)}
 
 while True:
     print((rowGuard, colGuard))

@@ -1,8 +1,12 @@
-def prettyPrint(array: list):
+from typing import Literal, TypeAlias
+
+def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
-def xSearch(array, startingPos):
+Xmas = Literal['X', 'M', 'A', 'S']
+
+def xSearch(array: list[list[Xmas]], startingPos: tuple[int, int]) -> bool:
     r = startingPos[0]
     c = startingPos[1]
 
@@ -10,10 +14,10 @@ def xSearch(array, startingPos):
     if r == 0 or r == len(array)-1 or c == 0 or c == len(array[0])-1:
         return False
             
-    topLeft = array[r-1][c-1]
-    topRight =  array[r-1][c+1]
-    bottomLeft = array[r+1][c-1]
-    bottomRight = array[r+1][c+1]
+    topLeft: Xmas = array[r-1][c-1]
+    topRight: Xmas =  array[r-1][c+1]
+    bottomLeft: Xmas = array[r+1][c-1]
+    bottomRight: Xmas = array[r+1][c+1]
 
     # Ms on Top
     if topLeft == "M" and topRight == "M" and bottomLeft == "S" and bottomRight == "S":
@@ -34,9 +38,9 @@ def xSearch(array, startingPos):
 with open("input.txt", 'r') as f:
     textIn = f.readlines()
 
-wSearch = [x.strip() for x in textIn]
+wSearch: list[int] = [x.strip() for x in textIn]
 
-count = 0
+count: int = 0
 # rows
 for i in range(len(wSearch)):
     # columns

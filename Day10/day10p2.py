@@ -12,7 +12,7 @@ def getValidAdjacentCoordinates(daMap: list[str], coordinate: tuple[int, int]) -
         (r,c-1)     # left
     ]
 
-    valid = []
+    valid: list[tuple[int, int]] = []
 
     for coord in newCoord:
         if 0 <= coord[0] < len(daMap) and 0 <= coord[1] < len(daMap[1]) and daMap[coord[0]][coord[1]] != '.':
@@ -26,9 +26,9 @@ with open("input.txt", 'r') as f:
     
 prettyPrint(textIn)
 
-topMap = [x.strip() for x in textIn]
+topMap: list[str] = [x.strip() for x in textIn]
 
-trailStarts = []
+trailStarts: list[tuple[int, int]] = []
 # get coordinates of start of trail (0)
 for r, x in enumerate(topMap):
     for c, y in enumerate(x):
@@ -36,11 +36,11 @@ for r, x in enumerate(topMap):
             trailStarts.append((r,c))
 
 # go through each starting position
-totalRatings = 0
+totalRatings: int = 0
 for start in trailStarts:
-    queue = [(*start, 0)]
+    queue: list[tuple[int, int, int]] = [(*start, 0)]
 
-    ratings = 0
+    ratings: int = 0
 
     # until no more unvisited
     while len(queue):

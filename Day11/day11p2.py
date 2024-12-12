@@ -19,7 +19,7 @@ def splitNumber(number: int) -> tuple[int, int]:
     return (firstHalf, secondHalf)
     
     
-def tryAdd(dictionary: dict, number: int, value: int) -> dict:
+def tryAdd(dictionary: dict[int, int], number: int, value: int) -> dict[int, int]:
     newDict = dictionary
 
     if number in newDict:
@@ -34,7 +34,7 @@ with open("input.txt", 'r') as f:
     textIn = f.readline()
 
 # format numbers
-stones = {}
+stones: dict[int, int] = {}
 for stone in [int(x) for x in textIn.split()]:
     stones = tryAdd(stones, stone, 1)
 
@@ -42,7 +42,7 @@ for stone in [int(x) for x in textIn.split()]:
 iterations = 75
 for i in range(iterations):
     # key: stone number | value: number of 
-    newStones = {}
+    newStones: dict[int, int] = {}
 
     for stone, count in stones.items():
         # rule 1: number is 0 -> convert to 1
@@ -61,7 +61,7 @@ for i in range(iterations):
         newStones = tryAdd(newStones, stone*2024, count) 
     stones = newStones
 
-total = 0
+total: int = 0
 for i in stones:
     total += stones[i]
 print(total)

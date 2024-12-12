@@ -1,3 +1,5 @@
+from typing import Literal, TypedDict
+
 def prettyPrint(array: list[str]) -> None:
     for i in array:
         print(i.strip())
@@ -12,6 +14,8 @@ def prettyPrint(array: list[str]) -> None:
 
 # 2858
 
+BlockObject = TypedDict('BlockObject', {'startingIndex': int, 'length': int})
+
 ## input
 with open("input.txt", 'r') as f:
     textIn = f.readlines()
@@ -21,9 +25,9 @@ prettyPrint(textIn)
 diskMap = textIn[0].strip()
 
 # initalized blocks
-blocks = []
-currentID = 0
-ids = {}
+blocks: list[int | Literal['.']] = []
+currentID: int = 0
+ids: dict[int, BlockObject] = {}
 for i, v in enumerate(diskMap):
     eveness = i % 2
 
@@ -35,7 +39,7 @@ for i, v in enumerate(diskMap):
             blocks.append(currentID)
         
         # save in dictionary
-        blockObj = {'startingIndex': currentIndex, 'length': int(v)}
+        blockObj: BlockObject = {'startingIndex': currentIndex, 'length': int(v)}
         ids[currentID] = blockObj
         # increment id for next
         currentID += 1
@@ -81,7 +85,7 @@ for id in reversed(ids):
             break
     
 # calculate result
-total = 0
+total: int = 0
 for i, v in enumerate(blocks):
     if v != '.':
         total += i * v

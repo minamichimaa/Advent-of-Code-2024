@@ -1,8 +1,11 @@
+from typing import TypeAlias
 from itertools import combinations
 
 def prettyPrint(array: list[str]) -> None:
     for i in array:
         print(i.strip())
+
+Point: TypeAlias = complex
 
 ## input
 with open("input.txt", 'r') as f:
@@ -27,7 +30,7 @@ graph = [x.strip() for x in textIn]
 prettyPrint(graph)
 
 # find antennas
-antennas = {}
+antennas: dict[str, list[tuple[int, int]]] = {}
 for r in range(len(graph)):
     for c in range(len(graph[0])):
         # not empty
@@ -40,7 +43,7 @@ for r in range(len(graph)):
                 antennas[graph[r][c]].append((r, c))
 
 print(antennas)
-antinodes = set()
+antinodes: set[Point] = set()
 bounds = len(graph)
 
 # check each frequency
@@ -48,8 +51,8 @@ for freq in antennas:
     # all cominations of antennas in freq
     combs = combinations(antennas[freq], 2)
     for p1, p2 in combs:
-        p1New = complex(*p1)
-        p2New = complex(*p2)
+        p1New: Point = complex(*p1)
+        p2New: Point = complex(*p2)
 
         # add antennas as antinodes
         antinodes.add(p1New)
