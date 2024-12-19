@@ -1,3 +1,5 @@
+from copy import deepcopy
+from ordered_set import OrderedSet
 from typing import TypeAlias, Literal
 
 def prettyPrint(array: list[str]):
@@ -8,26 +10,28 @@ def prettyPrint(array: list[str]):
 with open("input.txt", 'r') as f:
     textIn = f.readlines()
     
-graph: list[str] = [x.strip() for x in textIn]
+grid: list[str] = [x.strip() for x in textIn]
 
-Direction: TypeAlias = Literal['up', 'right', 'down', 'left']
-Point: TypeAlias = tuple[int, int]
+Coordinate: TypeAlias = tuple[int, int]
 
-def moveDirection(field: list[list[str]], direction: Direction, position: Point) -> tuple[list[Point], Point, bool]:
+# directions and their offset
+DIRECTIONS: dict[str, tuple[int, int]] = {
+    'up': (-1, 0),
+    'right': (0, 1),
+    'down': (1, 0),
+    'left': (0, -1)
+}
+DIRKEYS: tuple[str] = tuple(DIRECTIONS.keys())
+
+def moveDirection(field: list[list[str]], direction: str, position: Coordinate) -> tuple[OrderedSet[Coordinate], Coordinate, bool]:
     currPos = position
-    visited = [position]
+    visited = OrderedSet()
+    visited.add((position))
     exited = False
 
-    dirs: dict[str, Point] = {
-        'up': (-1, 0),
-        'right': (0, 1),
-        'down': (1, 0),
-        'left': (0, -1)
-    }
-    
     while True:
         # move
-        nextPos: Point = tuple(map(sum, zip(currPos, dirs[direction])))
+        nextPos: Coordinate = tuple(map(sum, zip(currPos, DIRECTIONS[direction])))
         # check rows and columns if out of bounds
         if nextPos[0] < 0 or nextPos[0] == len(field) or nextPos[1] < 0 or nextPos[1] == len(field[0]):
             exited = True
@@ -39,42 +43,37 @@ def moveDirection(field: list[list[str]], direction: Direction, position: Point)
 
         # add visited
         currPos = nextPos
-        visited.append(currPos)
+        visited.add(currPos)
 
+    # returns 3 values as a tuple
+    # all the positions in the path traveled, 
+    # the position before the wall or leaving, 
+    # and if exited the grid or not
     return (visited, currPos, exited)
 
-rowGuard = None
-colGuard = None
-
-directions: list[Direction] = [
-    'up',
-    'right',
-    'down',
-    'left'
-]
+rowGuard: int | None = None
+colGuard: int | None = None
 
 # find guard
-for rNum, rVal in enumerate(graph):
+for rNum, rVal in enumerate(grid):
     colGuard = rVal.find('^')
     if colGuard != -1:
         rowGuard = rNum
         break
 
-rowGuard: int
-colGuard: int
-
-graph[rowGuard] = graph[rowGuard][:colGuard] + '.' + graph[rowGuard][colGuard+1:] 
+originalGuardPos = (rowGuard, colGuard)
 
 # do movement
-facing: int = 0
-visited: list[tuple[int, int, int]] = []
+facing = 0
+visited = OrderedSet()
+visited.add((rowGuard, colGuard, facing))
 
 while True:
     # move
-    newVisted, newPos, didExit = moveDirection(graph, directions[facing], (rowGuard, colGuard))
+    newVisted, newPos, didExit = moveDirection(grid, DIRKEYS[facing], (rowGuard, colGuard))
     
     # update visited
-    visited += [(x[0],x[1],facing) for x in newVisted]
+    visited.update((x[0],x[1],facing) for x in newVisted)
     rowGuard, colGuard = newPos
 
     # check if out of bounds
@@ -84,36 +83,34 @@ while True:
     # rotate
     facing = (facing + 1) % 4
 
-validObstructionCount: int = 0
-for i, pos in reversed(list(enumerate(visited))[1:]):
-    print(f'obstructing: {pos}')
+validObstructions = set()
+for pos in reversed(list(visited)[1:]):
     # make copy of map
-    newGraph = [x for x in graph]
+    newGrid = deepcopy(grid)
     # put object in position
-    newLine: str = newGraph[pos[0]][:pos[1]] + '#' + newGraph[pos[0]][pos[1]+1:]
-    newGraph[pos[0]] = newLine
+    newLine: str = newGrid[pos[0]][:pos[1]] + '#' + newGrid[pos[0]][pos[1]+1:]
+    newGrid[pos[0]] = newLine
     
     # continue simulation movement
-    oldVisited = {x for x in visited[:i]}
-    simRowGuard, simColGuard = visited[i-1][:2]
-    simFacing = (visited[i-1][2] + 1) % 4
+    freshVisited = set()
+    simRowGuard, simColGuard = originalGuardPos
+    simFacing = 0
     while True:
         # move
-        newVisted, newPos, didExit = moveDirection(newGraph, directions[simFacing], (simRowGuard, simColGuard))
-
-        # check if postition is already visited # has loop
-        simulatedVisited = set([(x[0], x[1], simFacing) for x in newVisted])
-        intersection = oldVisited & simulatedVisited
-        if len(intersection):
-            print(intersection)
-            validObstructionCount += 1
-            break
+        newVisted, newPos, didExit = moveDirection(newGrid, DIRKEYS[simFacing], (simRowGuard, simColGuard))
 
         # check if out of bounds # no loop
         if didExit:
             break
 
-        oldVisited |= simulatedVisited
+        # check if position is already visited # has loop
+        simulatedVisited = set(((x[0], x[1], simFacing) for x in newVisted))
+        intersection = freshVisited & simulatedVisited
+        if len(intersection):
+            validObstructions.add(pos[:2])
+            break
+
+        freshVisited.update(simulatedVisited)
 
         # continue simulation
         simRowGuard, simColGuard = newPos
@@ -121,5 +118,4 @@ for i, pos in reversed(list(enumerate(visited))[1:]):
         # rotate
         simFacing = (simFacing + 1) % 4
 
-print(validObstructionCount)
-
+print(len(validObstructions))

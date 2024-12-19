@@ -8,27 +8,28 @@ def prettyPrint(array: list[str]):
 with open("input.txt", 'r') as f:
     textIn = f.readlines()
     
-graph: list[str] = [x.strip() for x in textIn]
+grid: list[str] = [x.strip() for x in textIn]
 
 Direction: TypeAlias = Literal['up', 'right', 'down', 'left']
-Point: TypeAlias = tuple[int, int]
+Coordinate: TypeAlias = tuple[int, int]
 
-def moveDirection(field: list[list[str]], direction: Direction, position: Point) -> tuple[set[Point], Point, bool]:
+# directions and their offset
+DIRECTIONS: dict[Direction, tuple[int, int]] = {
+    'up': (-1, 0),
+    'right': (0, 1),
+    'down': (1, 0),
+    'left': (0, -1)
+}
+DIRKEYS = tuple(DIRECTIONS.keys())
+
+def moveDirection(field: list[list[str]], direction: Direction, position: Coordinate) -> tuple[set[Coordinate], Coordinate, bool]:
     currPos = position
     visited = {position}
     exited = False
 
-    dirs: dict[Direction, Point] = {
-        'up': (-1, 0),
-        'right': (0, 1),
-        'down': (1, 0),
-        'left': (0, -1)
-    }
-    
     while True:
         # move
-        print(currPos)
-        nextPos: Point = tuple(map(sum, zip(currPos, dirs[direction])))
+        nextPos: Coordinate = tuple(map(sum, zip(currPos, DIRECTIONS[direction])))
         # check rows and columns if out of bounds
         if nextPos[0] < 0 or nextPos[0] == len(field) or nextPos[1] < 0 or nextPos[1] == len(field[0]):
             exited = True
@@ -42,39 +43,32 @@ def moveDirection(field: list[list[str]], direction: Direction, position: Point)
         currPos = nextPos
         visited.add(currPos)
 
+    # returns 3 values as a tuple
+    # all the positions in the path traveled, 
+    # the position before the wall or leaving, 
+    # and if exited the grid or not
     return (visited, currPos, exited)
 
 rowGuard: int | None = None
 colGuard: int | None = None
 
-directions: list[Direction] = [
-    'up',
-    'right',
-    'down',
-    'left'
-]
-
 # find guard
-for rNum, rVal in enumerate(graph):
+for rNum, rVal in enumerate(grid):
     colGuard = rVal.find('^')
     if colGuard != -1:
         rowGuard = rNum
         break
 
-rowGuard: int
-colGuard: int
-
 # do movement
 facing = 0
-visted: set[Point] = {(rowGuard, colGuard)}
+visited: set[Coordinate] = {(rowGuard, colGuard)}
 
 while True:
-    print((rowGuard, colGuard))
     # move
-    newVisted, newPos, didExit = moveDirection(graph, directions[facing], (rowGuard, colGuard))
+    newVisted, newPos, didExit = moveDirection(grid, DIRKEYS[facing], (rowGuard, colGuard))
     
     # update visited
-    visted.update(newVisted)
+    visited.update(newVisted)
     rowGuard, colGuard = newPos
 
     # check if out of bounds
@@ -84,4 +78,4 @@ while True:
     # rotate
     facing = (facing + 1) % 4
 
-print(visted, len(visted))
+print(len(visited))
