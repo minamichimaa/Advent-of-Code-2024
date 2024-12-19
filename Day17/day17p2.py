@@ -88,7 +88,7 @@ while True:
         else:
             newNumMatches += 1
     if newNumMatches > numMatches:
-        print(bin(i))
+        print(i, bin(i))
         numMatches = newNumMatches
         
     if isSame:
