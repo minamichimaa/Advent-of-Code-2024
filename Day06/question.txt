@@ -89,8 +89,6 @@ Predict the path of the guard. How many distinct positions will the guard visit 
 
 Your puzzle answer was 4826.
 
-The first half of this puzzle is complete! It provides one gold star: *
-
 --- Part Two ---
 While The Historians begin working around the guard's patrol route, you borrow their fancy device and step outside the lab. From the safety of a supply closet, you time travel through the last few months and record the nightly status of the lab's guard post on the walls of the closet.
 
@@ -178,3 +176,5 @@ Option six, put a tank of sovereign glue right next to the tank of universal sol
 It doesn't really matter what you choose to use as an obstacle so long as you and The Historians can put it into position without the guard noticing. The important thing is having enough options that you can find one that minimizes time paradoxes, and in this example, there are 6 different positions you could choose.
 
 You need to get the guard stuck in a loop by adding a single new obstruction. How many different positions could you choose for this obstruction?
+
+Your puzzle answer was 1721.
