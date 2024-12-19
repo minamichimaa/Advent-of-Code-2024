@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
@@ -8,24 +10,19 @@ with open("input.txt", 'r') as f:
 
 ## format input
 leftList: list = []
-rightList: dict[int, int] = {}
+rightList: defaultdict[dict[int, int]] = defaultdict(int)
 for line in textIn:
-    a, b = line.strip().split('  ')
-    leftList.append(int(a))
+    l, r = line.strip().split()
+    leftList.append(int(l))
 
     ## count right appearance
-    newB = int(b)
-    if newB in rightList:
-        rightList[newB] += 1
-    else:
-        rightList[newB] = 1
-
-print(leftList)
-print(rightList)
+    newB = int(r)
+    rightList[newB] += 1
 
 ## calulate
 totalSimilarity = 0
-for i in leftList:
-    if i in rightList:
-        totalSimilarity += i * rightList[i]
-    print(totalSimilarity)
+for x in leftList:
+    if x in rightList:
+        totalSimilarity += x * rightList[x]
+        
+print(totalSimilarity)
