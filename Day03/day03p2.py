@@ -8,20 +8,18 @@ def prettyPrint(array: list[str]):
 with open("input.txt", 'r') as f:
     textIn = f.readlines()
 
-# find numbers in mult instruction
-regex: re.Pattern = re.compile(r'mul\(([0-9]{1,3})\,([0-9]{1,3})\)')
 # find instructions
-regexAll: re.Pattern = re.compile(r'mul\([0-9]{1,3}\,[0-9]{1,3}\)|don\'t\(\)|do\(\)')
+regex: re.Pattern = re.compile(r'mul\([0-9]{1,3}\,[0-9]{1,3}\)|don\'t\(\)|do\(\)')
 
 total: int = 0
 doing: bool = True
 for line in textIn:
     # find instructions
-    matches = regexAll.findall(line)
-    print(matches)
+    matches = regex.findall(line)
 
     # instructions
     for match in matches:
+        print(match)
         # don't() instruction
         if match.startswith('don\'t'):
             doing = False
@@ -29,9 +27,8 @@ for line in textIn:
         elif match.startswith('do'):
             doing = True
         # do() and mult() instruction
-        elif doing == True:
-            multMatch = regex.findall(match)
-            result = int(multMatch[0][0]) * int(multMatch[0][1])
-            total += result
+        elif doing:
+            a, b = (int(x) for x in match[4:-1].split(','))
+            total += a * b
 
 print(total)

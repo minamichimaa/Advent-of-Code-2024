@@ -16,7 +16,6 @@ for line in textIn:
     matches = regex.findall(line)
     # calculate multiplication
     for match in matches:
-        result = int(match[0]) * int(match[1])
-        total += result
+        total += int(match[0]) * int(match[1])
 
 print(total)
