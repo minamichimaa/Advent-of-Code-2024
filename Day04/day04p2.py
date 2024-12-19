@@ -1,36 +1,33 @@
-from typing import Literal, TypeAlias
+from collections import defaultdict
 
 def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
-Xmas = Literal['X', 'M', 'A', 'S']
-
-def xSearch(array: list[list[Xmas]], startingPos: tuple[int, int]) -> bool:
+def xSearch(array: list[str], startingPos: tuple[int, int]) -> bool:
     r = startingPos[0]
     c = startingPos[1]
 
     # A is on the edge (of glory)
-    if r == 0 or r == len(array)-1 or c == 0 or c == len(array[0])-1:
+    if r in (0, len(array)-1) or c in (0,len(array[0])-1):
         return False
-            
-    topLeft: Xmas = array[r-1][c-1]
-    topRight: Xmas =  array[r-1][c+1]
-    bottomLeft: Xmas = array[r+1][c-1]
-    bottomRight: Xmas = array[r+1][c+1]
 
-    # Ms on Top
-    if topLeft == "M" and topRight == "M" and bottomLeft == "S" and bottomRight == "S":
-        return True
-    # Ms on Left
-    if topLeft == "M" and topRight == "S" and bottomLeft == "M" and bottomRight == "S":
-        return True
-    # Ms on Right
-    if topLeft == "S" and topRight == "M" and bottomLeft == "S" and bottomRight == "M":
-        return True
-    # Ms on Bottom
-    if topLeft == "S" and topRight == "S" and bottomLeft == "M" and bottomRight == "M":
-        return True
+    directions = [
+        (-1, -1),   # topLeft
+        (-1, 1),    # topRight
+        (1, -1),    # bottomLeft
+        (1, 1),     # bottomRight
+    ]
+    
+    # count Ms and Ss
+    letterCount = defaultdict(int)
+    for r1, c1 in directions:
+        letterCount[array[r+r1][c+c1]] += 1
+    # 2 Ms and 2 Ss
+    if letterCount['M'] == letterCount['S'] == 2:
+        # opposing letters need to be opposite
+        if array[r-1][c-1] != array[r+1][c+1]:
+            return True
     # no X-MAS
     return False
 
@@ -38,7 +35,7 @@ def xSearch(array: list[list[Xmas]], startingPos: tuple[int, int]) -> bool:
 with open("input.txt", 'r') as f:
     textIn = f.readlines()
 
-wSearch: list[int] = [x.strip() for x in textIn]
+wSearch: list[str] = [x.strip() for x in textIn]
 
 count: int = 0
 # rows

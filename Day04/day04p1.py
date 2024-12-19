@@ -1,35 +1,24 @@
-from typing import Literal, TypeAlias
-
 def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
-Direction: TypeAlias = Literal['topLeft', 'up', 'topRight', 'left', 'right', 'bottomleft', 'down', 'bottomRight']
+directions: dict[str, tuple[int, int]] = {
+    'up': (-1, 0),
+    'upRight': (-1, 1),
+    'right': (0, 1),
+    'downRight': (1, 1),
+    'down': (1, 0),
+    'downleft': (1, -1),
+    'left': (0, -1),
+    'upLeft': (-1, -1),
+}
 
-def letterSearch(array: list[list[str]], startingPos: tuple[int, int], direction: Direction, letter: str) -> tuple[int, int] | None:
-    r = startingPos[0]
-    c = startingPos[1]
-    # update position based on direction
-    if direction == 'topLeft':
-        r -= 1
-        c -= 1
-    elif direction == 'up':
-        r -= 1
-    elif direction == 'topRight':
-        r -= 1
-        c += 1
-    elif direction == 'left':
-        c -= 1
-    elif direction == 'right':
-        c += 1
-    elif direction == 'bottomleft':
-        c -= 1
-        r += 1
-    elif direction == 'down':
-        r += 1
-    elif direction == 'bottomRight':
-        c += 1
-        r += 1
+def letterSearch(array: list[list[str]], startingPos: tuple[int, int], direction: str, letter: str) -> tuple[int, int] | None:
+    r, c = startingPos
+    r1, c1 = directions[direction]
+    
+    r += r1
+    c += c1
     
     # check if out of bounds
     if r < 0 or r >= len(array) or c < 0 or c >= len(array[0]):
@@ -47,17 +36,6 @@ with open("input.txt", 'r') as f:
     textIn = f.readlines()
 
 wSearch: list[str] = [x.strip() for x in textIn]
-
-directions: list[Direction] = [
-    'topLeft',
-    'up',
-    'topRight',
-    'left',
-    'right',
-    'bottomleft',
-    'down',
-    'bottomRight'
-]
 
 count: int = 0
 # rows
