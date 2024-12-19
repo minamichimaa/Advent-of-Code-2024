@@ -7,8 +7,8 @@ def isSafe(report: list[int]) -> bool:
     if abs(diff) < 1 or abs(diff) > 3:
         return False
 
-    for l in range(2, len(report)):
-        newDiff = report[l-1] - report[l]
+    for i in range(2, len(report)):
+        newDiff = report[i-1] - report[i]
         # check if signs match
         cross = diff * newDiff
         if cross < 0:
@@ -34,17 +34,12 @@ for line in textIn:
 ## count safe reports
 safeCount: int = 0
 for report in reports:
-    safe = False
     # remove nth item from list
     for i in range(len(report)):
         newReport = report[:i] + report[i+1:]
-        print(report, newReport)
         # check if this iteration works
         if isSafe(newReport):
-            safe = True
+            safeCount += 1
             break
-
-    if safe:
-        safeCount += 1
 
 print(safeCount)
