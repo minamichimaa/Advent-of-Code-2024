@@ -1,6 +1,6 @@
 from copy import deepcopy
 from ordered_set import OrderedSet
-from typing import TypeAlias, Literal
+from typing import TypeAlias
 
 def prettyPrint(array: list[str]):
     for i in array:
