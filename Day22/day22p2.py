@@ -1,11 +1,13 @@
 from collections import defaultdict
 
+
 def prettyPrint(array: list[str]):
     for i in array:
         print(i)
 
+
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readlines()
 
 secrets = [int(x) for x in textIn]
@@ -19,23 +21,23 @@ for originalSecret in secrets:
     secretPrices = [lastPrice]
     secretPriceChanges = []
     x = originalSecret
-    
+
     for i in range(steps):
         # step 1
-        y = x << 6          # multiply by 64
-        z = x ^ y           # mix
-        x = z & 16777215    # prune     
-        
+        y = x << 6  # multiply by 64
+        z = x ^ y  # mix
+        x = z & 16777215  # prune
+
         # step 2
-        y = x >> 5          # divide by 32    
-        z = x ^ y           # mix
-        x = z & 16777215    # prune
-        
+        y = x >> 5  # divide by 32
+        z = x ^ y  # mix
+        x = z & 16777215  # prune
+
         # step 3
-        y = x * 2048        # multiply by 2048
-        z = x ^ y           # mix
-        x = z & 16777215    # prune
-        
+        y = x * 2048  # multiply by 2048
+        z = x ^ y  # mix
+        x = z & 16777215  # prune
+
         # calculate prices and price changes
         newPrice = x % 10
         secretPriceChanges.append(newPrice - lastPrice)
@@ -52,11 +54,16 @@ moneys = []
 for i in range(len(priceChanges)):
     money = {}
     # do for every sequence of 4
-    for j in range(0, len(priceChanges[i])-3):
+    for j in range(0, len(priceChanges[i]) - 3):
         # only add if sequence is the first occurance
-        seq = (priceChanges[i][j], priceChanges[i][j+1], priceChanges[i][j+2], priceChanges[i][j+3])
+        seq = (
+            priceChanges[i][j],
+            priceChanges[i][j + 1],
+            priceChanges[i][j + 2],
+            priceChanges[i][j + 3],
+        )
         if seq not in money:
-            money[seq] = prices[i][j+4]
+            money[seq] = prices[i][j + 4]
     moneys.append(money)
 
 # merge and add prices of each together
@@ -67,4 +74,3 @@ for i in moneys:
         mergedMoneys[k] += v
 
 print(max(mergedMoneys.values()))
-

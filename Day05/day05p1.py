@@ -2,8 +2,9 @@ def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
+
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readlines()
 
 # parse input
@@ -12,16 +13,16 @@ updates: list[list[int]] = []
 
 for line in textIn:
     # rules
-    if '|' in line:
-        a,b = [int(x) for x in line.strip().split('|')]
+    if "|" in line:
+        a, b = [int(x) for x in line.strip().split("|")]
         # add to dictionary
         if a in rules:
             rules[a].add(b)
         else:
             rules[a] = {b}
     # updates
-    elif ',' in line:
-        updates.append([int(x) for x in line.strip().split(',')])
+    elif "," in line:
+        updates.append([int(x) for x in line.strip().split(",")])
 
 total: int = 0
 
@@ -45,10 +46,10 @@ for update in updates:
         if len(intersection) > 0:
             correctOrder = False
             break
-        
+
     # no overlap
     if correctOrder:
         middleIndex = len(update) // 2
         total += update[middleIndex]
-    
+
 print(total)

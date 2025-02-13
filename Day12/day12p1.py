@@ -2,36 +2,44 @@ def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
-def getValidAdjacentCoordinates(farm: list[str], coordinate: tuple[int, int]) -> list[tuple[int, int]]:
-    r,c = coordinate
+
+def getValidAdjacentCoordinates(
+    farm: list[str], coordinate: tuple[int, int]
+) -> list[tuple[int, int]]:
+    r, c = coordinate
     flowerType = farm[r][c]
 
     newCoord = [
-        (r-1,c),    # top 
-        (r,c+1),    # right 
-        (r+1,c),    # down 
-        (r,c-1)     # left
+        (r - 1, c),  # top
+        (r, c + 1),  # right
+        (r + 1, c),  # down
+        (r, c - 1),  # left
     ]
 
     valid: list[tuple[int, int]] = []
 
     for coord in newCoord:
-        if 0 <= coord[0] < len(farm) and 0 <= coord[1] < len(farm[1]) and farm[coord[0]][coord[1]] == flowerType:
+        if (
+            0 <= coord[0] < len(farm)
+            and 0 <= coord[1] < len(farm[1])
+            and farm[coord[0]][coord[1]] == flowerType
+        ):
             valid.append(coord)
 
     return valid
 
+
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readlines()
-    
+
 farm = [x.strip() for x in textIn]
 
 visited = set()
 queue = []
 
-for r in range(len(farm)-1, -1, -1):
-    for c in range(len(farm[r])-1, -1, -1):
+for r in range(len(farm) - 1, -1, -1):
+    for c in range(len(farm[r]) - 1, -1, -1):
         queue.append((r, c))
 
 cost = 0
@@ -44,7 +52,7 @@ while True:
     # prioritize region queue
     if len(regionQueue):
         currentFlower = regionQueue.pop()
-    # nothing in region queue 
+    # nothing in region queue
     else:
         # calulate cost
         cost += currentCount * currentSides
@@ -69,5 +77,5 @@ while True:
     # add count and sides
     currentCount += 1
     currentSides += 4 - len(adjecantCoords)
-    
+
 print(cost)

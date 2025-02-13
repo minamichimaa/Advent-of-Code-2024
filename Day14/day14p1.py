@@ -2,19 +2,22 @@ import re
 
 from functools import reduce
 
+
 def prettyPrint(array: list[str]):
     for i in array:
         print(i)
 
-def complexModulo(cNum:complex, mod:complex) -> complex:
+
+def complexModulo(cNum: complex, mod: complex) -> complex:
     realModulo = cNum.real % mod.real
     imagModulo = cNum.imag % mod.imag
     return complex(realModulo, imagModulo)
 
-regex = re.compile(r'p=(\-?[0-9]+),(\-?[0-9]+) v=(\-?[0-9]+),(\-?[0-9]+)')
+
+regex = re.compile(r"p=(\-?[0-9]+),(\-?[0-9]+) v=(\-?[0-9]+),(\-?[0-9]+)")
 
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readlines()
 
 # parse data
@@ -46,8 +49,8 @@ for sec in range(time):
         rob[0] = newCoordsMod
 
 # count quadrants
-halfWidth = (width // 2)
-halfHeight = (height // 2)
+halfWidth = width // 2
+halfHeight = height // 2
 quadCount = [0, 0, 0, 0]
 for rob in robots:
     # quadrant 1
@@ -64,4 +67,4 @@ for rob in robots:
         quadCount[3] += 1
 
 # calculate safety factor
-print(reduce(lambda x, y: x*y, quadCount, 1))
+print(reduce(lambda x, y: x * y, quadCount, 1))

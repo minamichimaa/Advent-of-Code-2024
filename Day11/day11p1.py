@@ -1,13 +1,16 @@
 from math import log10, floor
 
+
 def prettyPrint(array: list[str]) -> None:
     for i in array:
         print(i.strip())
+
 
 def digits(number: int) -> int:
     if number == 0:
         return 1
     return floor(log10(number)) + 1
+
 
 def splitNumber(number: int) -> tuple[int, int]:
     numDigits = digits(number)
@@ -18,8 +21,9 @@ def splitNumber(number: int) -> tuple[int, int]:
 
     return (firstHalf, secondHalf)
 
+
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readline()
 
 # format numbers
@@ -44,7 +48,7 @@ for i in range(iterations):
             continue
 
         # rule 3: other -> multiply by 2024
-        newStones.append(stone*2024)
+        newStones.append(stone * 2024)
     stones = newStones
 
 print(len(stones))

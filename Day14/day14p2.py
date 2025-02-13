@@ -1,40 +1,48 @@
 import re
 
+
 def prettyPrint(array: list[str]):
     for i in array:
         print(i)
 
+
 def prettyPrintGrid(grid: list[list[str]]):
     for line in grid:
-        print(''.join(line))
+        print("".join(line))
 
-def complexModulo(cNum:complex, mod:complex) -> complex:
+
+def complexModulo(cNum: complex, mod: complex) -> complex:
     realModulo = cNum.real % mod.real
     imagModulo = cNum.imag % mod.imag
     return complex(realModulo, imagModulo)
 
-def robotsAsGrid(robots:list[list[complex, complex]], width: int, height: int) -> list[list[str]]:
-    newGrid = [['.' for x in range(width)] for y in range(height)] 
+
+def robotsAsGrid(
+    robots: list[list[complex, complex]], width: int, height: int
+) -> list[list[str]]:
+    newGrid = [["." for x in range(width)] for y in range(height)]
 
     for rob in robots:
         col = int(rob[0].real)
         row = int(rob[0].imag)
-        newGrid[row][col] = '#'
+        newGrid[row][col] = "#"
 
     return newGrid
 
-def gridAsStr(grid:list[list[str]]) -> str:
+
+def gridAsStr(grid: list[list[str]]) -> str:
     stringList = []
 
     for line in grid:
-        stringList.append(''.join(line))
-    
-    return '\n'.join(stringList)
+        stringList.append("".join(line))
 
-regex = re.compile(r'p=(\-?[0-9]+),(\-?[0-9]+) v=(\-?[0-9]+),(\-?[0-9]+)')
+    return "\n".join(stringList)
+
+
+regex = re.compile(r"p=(\-?[0-9]+),(\-?[0-9]+) v=(\-?[0-9]+),(\-?[0-9]+)")
 
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readlines()
 
 # parse data
@@ -64,13 +72,13 @@ for sec in range(time):
         newCoordsMod = complexModulo(newCoords, complexGrid)
         # update
         rob[0] = newCoordsMod
-    
+
     # look for border of tree
     if (sec - 22) % 101 == 0 or (sec - 88) % 103 == 0:
         grid = robotsAsGrid(robots, width, height)
         gridStr = gridAsStr(grid)
-        if '###############################' in gridStr:
-            print(f'found tree on {sec+1}')
+        if "###############################" in gridStr:
+            print(f"found tree on {sec+1}")
             print(gridStr)
 
             break

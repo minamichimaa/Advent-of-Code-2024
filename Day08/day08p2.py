@@ -1,17 +1,19 @@
 from typing import TypeAlias
 from itertools import combinations
 
+
 def prettyPrint(array: list[str]) -> None:
     for i in array:
         print(i.strip())
 
+
 Point: TypeAlias = complex
 
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readlines()
 
-'''    
+"""    
 ##....#....#
 .#.#....0...
 ..#.#0....#.
@@ -24,7 +26,7 @@ with open("input.txt", 'r') as f:
 ....#....A..
 .#........#.
 ...#......##
-'''
+"""
 
 graph = [x.strip() for x in textIn]
 prettyPrint(graph)
@@ -34,7 +36,7 @@ antennas: dict[str, list[tuple[int, int]]] = {}
 for r in range(len(graph)):
     for c in range(len(graph[0])):
         # not empty
-        if graph[r][c] != '.':
+        if graph[r][c] != ".":
             # make new freqency
             if graph[r][c] not in antennas:
                 antennas[graph[r][c]] = [(r, c)]

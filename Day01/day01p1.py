@@ -2,8 +2,9 @@ def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
+
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readlines()
 
 # format input

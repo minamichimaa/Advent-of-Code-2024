@@ -2,13 +2,14 @@ def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
+
 def isSafe(report: list[int]) -> bool:
     diff = report[0] - report[1]
     if abs(diff) < 1 or abs(diff) > 3:
         return False
 
     for i in range(2, len(report)):
-        newDiff = report[i-1] - report[i]
+        newDiff = report[i - 1] - report[i]
         # check if signs match
         cross = diff * newDiff
         if cross < 0:
@@ -16,11 +17,12 @@ def isSafe(report: list[int]) -> bool:
         # check if change is within 1 and 3 (inclusive)
         if abs(newDiff) < 1 or abs(newDiff) > 3:
             return False
-        
+
     return True
 
+
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readlines()
 
 ## format data

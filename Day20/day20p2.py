@@ -1,37 +1,43 @@
 from collections import defaultdict
 from itertools import combinations
 
+
 def prettyPrint(array: list[str]):
     for i in array:
         print(i)
 
-def getValidAdjacentCoordinates(grid: list[str], coordinate: tuple[int, int]) -> list[tuple[int, int]]:
-    r,c = coordinate
+
+def getValidAdjacentCoordinates(
+    grid: list[str], coordinate: tuple[int, int]
+) -> list[tuple[int, int]]:
+    r, c = coordinate
 
     newCoord = [
-        (r-1,c),    # top 
-        (r,c+1),    # right 
-        (r+1,c),    # down 
-        (r,c-1)     # left
+        (r - 1, c),  # top
+        (r, c + 1),  # right
+        (r + 1, c),  # down
+        (r, c - 1),  # left
     ]
 
     valid: list[tuple[int, int]] = []
 
     for coord in newCoord:
-        if grid[coord[0]][coord[1]] != '#':
+        if grid[coord[0]][coord[1]] != "#":
             valid.append(coord)
 
     return valid
 
+
 def distanceBetween(coord1: tuple[int, int], coord2: tuple[int, int]) -> int:
     a, b = coord1
     c, d = coord2
-    
-    distance = abs(a-c) + abs(b-d)
+
+    distance = abs(a - c) + abs(b - d)
     return distance
 
+
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readlines()
 
 grid = []
@@ -45,9 +51,9 @@ for r, line in enumerate(textIn):
     newLine = []
     for c, v in enumerate(currLine):
         newLine.append(v)
-        if v == 'S':
+        if v == "S":
             startPos = (r, c)
-        if v == 'E':
+        if v == "E":
             endPos = (r, c)
     grid.append(newLine)
 
@@ -72,7 +78,9 @@ while True:
             currDist = distanceFromStart[adjPos]
             currPos = adjPos
 
-distanceFromEnd = {x:(distanceFromStart[endPos] - distanceFromStart[x]) for x in distanceFromStart}
+distanceFromEnd = {
+    x: (distanceFromStart[endPos] - distanceFromStart[x]) for x in distanceFromStart
+}
 
 # get all combinations of point to point
 combos = combinations(distanceFromStart.keys(), 2)

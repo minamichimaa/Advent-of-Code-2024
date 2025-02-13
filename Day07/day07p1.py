@@ -1,15 +1,17 @@
 import re
 
+
 def prettyPrint(array: list[str]) -> None:
     for i in array:
         print(i.strip())
 
-regex = re.compile(r'([0-9]+)')
+
+regex = re.compile(r"([0-9]+)")
 
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readlines()
-    
+
 total: int = 0
 
 # calculate
@@ -38,7 +40,7 @@ for line in textIn:
                 newNums.add(mult)
             # new queue
             nums = newNums
-            
+
     # found target
     if target in nums:
         total += target

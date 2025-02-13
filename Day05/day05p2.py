@@ -1,10 +1,13 @@
 from typing import TypeAlias, TypeVar
 
+
 def prettyPrint(array: list[str]):
     for i in array:
         print(i.strip())
 
-_T = TypeVar('_T')
+
+_T = TypeVar("_T")
+
 
 class TreeNode[_T]:
     def __init__(self, value: _T):
@@ -22,19 +25,20 @@ class TreeNode[_T]:
         childDepths = []
         for child in self.children:
             childDepth, childValues = child.optimalOrder()
-            childDepths.append((childDepth+1, f'{self.value} {childValues}'))
-        childDepths.sort(key = lambda x: x[0], reverse=True)
+            childDepths.append((childDepth + 1, f"{self.value} {childValues}"))
+        childDepths.sort(key=lambda x: x[0], reverse=True)
         return childDepths[0]
 
     def __repr__(self) -> str:
         return str(self.value)
-        string = ''
+        string = ""
         for child in self.children:
             string += str(child)
-        return f'<{self.value}: {string}>'
+        return f"<{self.value}: {string}>"
+
 
 ## input
-with open("input.txt", 'r') as f:
+with open("input.txt", "r") as f:
     textIn = f.readlines()
 
 # parse input
@@ -43,16 +47,16 @@ updates: list[list[int]] = []
 
 for line in textIn:
     # rules
-    if '|' in line:
-        a,b = [int(x) for x in line.strip().split('|')]
+    if "|" in line:
+        a, b = [int(x) for x in line.strip().split("|")]
         # add to dictionary
         if a in rules:
             rules[a].add(b)
         else:
             rules[a] = {b}
     # updates
-    elif ',' in line:
-        updates.append([int(x) for x in line.strip().split(',')])
+    elif "," in line:
+        updates.append([int(x) for x in line.strip().split(",")])
 
 needReorder: list[list[int]] = []
 
@@ -78,7 +82,7 @@ for update in updates:
             break
     if not correctOrder:
         needReorder.append(update)
-        
+
 total: int = 0
 for fix in needReorder:
     # trim rules
@@ -105,7 +109,7 @@ for fix in needReorder:
     orders: list[tuple[int, str]] = []
     for node in nodeDict:
         orders.append(nodeDict[node].optimalOrder())
-    orders.sort(key = lambda x: x[0], reverse=True)
+    orders.sort(key=lambda x: x[0], reverse=True)
 
     # get middle number
     optimalString = orders[0][1].split()
